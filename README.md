@@ -1,4 +1,4 @@
-# Projet de Groupe CI/CD - gestion-utilisateurs
+# Projet de Groupe CI/CD
 
 Ce projet est une application web de gestion des utilisateurs, développée dans le cadre d'un cours de Développement Web. L'application permet aux utilisateurs de s'inscrire, de se connecter, de gérer leur profil et d'accéder à des fonctionnalités avancées telles que la suppression de compte.
 
@@ -21,11 +21,9 @@ Ce projet vise à fournir une solution complète pour la gestion des utilisateur
 
 Le projet est divisé en plusieurs parties :
 
-- **frontend/** : Contient les fichiers de l'application frontend React.
+- **app/** : Contient les fichiers de l'application frontend React.
 - **backend_nodejs_mongodb/** : Contient les fichiers du backend Node.js avec MongoDB.
 - **backend_python_mysql/** : Contient les fichiers du backend Python avec MySQL.
-- **tests/** : Contient les tests unitaires, les tests d'intégration et les tests end-to-end.
-- **.github/** : Contient le workflow GitHub Actions pour l'automatisation des tests et déploiements.
 - **README.md** : Fournit des instructions détaillées sur l'installation, l'utilisation, les tests, le déploiement et la contribution au projet.
 
 ## Installation
@@ -41,10 +39,10 @@ Le projet est divisé en plusieurs parties :
 1. Clonez ce dépôt sur votre machine :
 git clone <url-du-repo>
 2. Accédez au dossier du projet :
-cd gestion-utilisateurs
+cd ProjetGroupe
 
 3. Installez les dépendances pour le frontend et le backend Node.js avec MongoDB :
-cd frontend
+cd app
 npm install
 cd ../backend_nodejs_mongodb
 npm install
@@ -59,20 +57,9 @@ docker-compose up -d
 6. Créez la base de données MySQL et les tables nécessaires :
 python create_db.py
 
-7. Créez un fichier .env à la racine du projet et ajoutez les variables d'environnement nécessaires :
-```
-# MongoDB
-MONGODB_URI=mongodb://localhost:27017/gestion-utilisateurs
-
-# MySQL
-MYSQL_HOST
-MYSQL_USER
-MYSQL_PASSWORD
-MYSQL_DB
-```
 
 8. Lancez les serveurs frontend et backend :
-cd ../frontend
+cd ../app
 npm start
 cd ../backend_nodejs_mongodb
 npm start
@@ -85,15 +72,4 @@ python app.py
 
 L'application permet aux utilisateurs de s'inscrire, de se connecter, de gérer leur profil et d'accéder à des fonctionnalités avancées telles que la suppression de compte.
 
-## Tests
-
-### Exécution des Tests
-
-1. Tests Unitaires : `npm test` dans le dossier backend Node.js et `pytest` dans le dossier backend Python.
-2. Tests d'Intégration : `npm test` dans le dossier backend Node.js et `pytest` dans le dossier backend Python.
-3. Tests End-to-End : Utilisation de Cypress pour exécuter les tests end-to-end.
-
-## Déploiement
-
-L'application peut être déployée sur différents environnements de déploiement, tels que Heroku, AWS, Google Cloud, etc.
 
