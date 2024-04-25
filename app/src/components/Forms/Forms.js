@@ -77,7 +77,7 @@ const Forms = () => {
 		await axios.post('http://localhost:8000/api/users', formData);
 
 		// Envoi des données du formulaire au backend Python avec MySQL
-		// await axios.post('http://localhost:5000/api/users', formData);
+		//await axios.post('http://localhost:5000/api/users', formData);
 
 		// Réinitialisation du formulaire après l'envoi réussi
 		setSuccessMessage('Formulaire envoyé');
