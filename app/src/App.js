@@ -12,16 +12,16 @@ function App() {
 		const fetchUserCount = async () => {
 			try {
 				// Requête vers le backend Node.js avec MongoDB pour récupérer le nombre d'utilisateurs
-				const nodeResponse = await axios.get(
-					'http://localhost:8000/api/users'
-				);
-				const nodeUserCount = nodeResponse.data.length;
-				setUserCount(nodeUserCount);
+				// const nodeResponse = await axios.get(
+				//	'http://localhost:8000/api/users'
+				// );
+				// const nodeUserCount = nodeResponse.data.length;
+				// setUserCount(nodeUserCount);
 
 				// Requête vers le backend Python avec MySQL pour récupérer le nombre d'utilisateurs
-				// const pythonResponse = await axios.get('http://localhost:5000/api/users/count');
-				// const pythonUserCount = pythonResponse.data.count;
-				// setUserCount(pythonUserCount);
+				const pythonResponse = await axios.get('http://localhost:8001/users/');
+				const pythonUserCount = pythonResponse.data.count;
+				setUserCount(pythonUserCount);
 			} catch (error) {
 				console.error('Error fetching user count:', error);
 			}
