@@ -76,8 +76,11 @@ const Forms = () => {
 		// Envoi des données du formulaire au backend Node.js avec MongoDB
 		// await axios.post('http://localhost:8000/api/users', formData);
 
+		const formattedDate = formData.birthday.split('/').reverse().join('-');
+		const formDataWithFormattedDate = { ...formData, birthday: formattedDate };
+
 		// Envoi des données du formulaire au backend Python avec MySQL
-		await axios.post('http://localhost:8001/users', formData);
+		await axios.post('http://localhost:8001/users', formDataWithFormattedDate);
 
 		// Réinitialisation du formulaire après l'envoi réussi
 		setSuccessMessage('Formulaire envoyé');

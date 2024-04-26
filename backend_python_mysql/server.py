@@ -2,6 +2,8 @@ import mysql.connector
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime
+
 
 app = FastAPI()
 origins = ["*"]
@@ -22,6 +24,7 @@ conn = mysql.connector.connect(
     port=3306, 
     host=os.getenv("MYSQL_HOST"))
 
+
 @app.get("/users")
 async def get_users():
     cursor = conn.cursor()
@@ -32,3 +35,4 @@ async def get_users():
     print("Total number of rows in table: ", cursor.rowcount)
     # renvoyer nos données et 200 code OK
     return {'utilisateurs': records}
+
