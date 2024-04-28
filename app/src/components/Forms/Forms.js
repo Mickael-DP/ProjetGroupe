@@ -21,7 +21,7 @@ import {
  * Composant Formulaires
  * @component
  */
-const Forms = () => {
+const Forms = ({ onUserCreated }) => {
 	// État local pour stocker les données du formulaire
 	const [formData, setFormData] = useState({
 		lastName: '',
@@ -135,6 +135,7 @@ const Forms = () => {
 		localStorage.setItem('formData', JSON.stringify(formData));
 
 		setSuccessMessage('Formulaire envoyé');
+		onUserCreated();
 		setFormData({
 			lastName: '',
 			firstName: '',
