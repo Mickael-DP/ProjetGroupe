@@ -77,6 +77,7 @@ function App() {
             checked={isAdmin}
             onChange={(event) => setIsAdmin(event.target.checked)}
             color="default"
+			data-testid="admin-switch"
             sx={{ marginLeft: 1 }}
           />
         </Box>

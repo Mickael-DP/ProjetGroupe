@@ -1,59 +1,69 @@
-# Projet CI/CD avec Docker et Tests
+# Projet Groupe
 
-Ce projet est une application web de gestion des utilisateurs, développée dans le cadre d'un cours de Développement Web. L'objectif est de créer deux architectures Docker distinctes pour le backend, une avec MongoDB / Node.js / React et une avec MySQL / Python / React. L'application React possède un formulaire qui permet de sauvegarder les données dans la base de données et d'afficher la liste des utilisateurs. De plus, elle doit permettre de supprimer un utilisateur, soit à l'aide d'un compte admin, soit avec un mot de passe connu par le serveur.
+Réalisé par Mickaël DALLE PASQUALINE et Nicolas BERNARD.
+Ce projet est une application web full-stack qui permet de basculer entre deux configurations de backend : Node.js avec MongoDB et Python avec MySQL.
 
-## Architecture du Projet
+## Prérequis
 
-Le projet est divisé en plusieurs parties :
+Pour utiliser ce projet, vous devez avoir Docker et Docker Compose installés sur votre machine.
 
-- **app/** : Contient les fichiers de l'application frontend React.
-- **backend_nodejs_mongodb/** : Contient les fichiers du backend Node.js avec MongoDB.
-- **backend_python_mysql/** : Contient les fichiers du backend Python avec MySQL.
-- **README.md** : Fournit des instructions détaillées sur l'installation, l'utilisation, les tests, le déploiement et la contribution au projet.
+## Mise en route
 
-## Installation
+Pour démarrer tous les services avec Docker Compose, exécutez la commande suivante :
 
-### Prérequis
+docker-compose up -d
 
-- Docker Desktop installé sur votre machine.
 
-### Étapes d'installation
+## Services
 
-1. Clonez ce dépôt sur votre machine :
-   ```bash
-   git clone <url-du-repo>
+L'application est composée de plusieurs services, qui sont configurés dans le fichier `docker-compose.yml` :
 
-2. Accédez au répertoire du projet :
-   ```bash
-   cd <nom-du-repo>
+- `db` : Base de données MySQL.
+- `adminer` : Outil d'administration de base de données, accessible à l'adresse `http://localhost:8080`.
+- `app` : Application front-end React, accessible à l'adresse `http://localhost:3000`.
+- `backend_node_mongo` : API backend utilisant Node.js et MongoDB, accessible à l'adresse `http://localhost:8000`.
+- `backend_python_mysql` : API backend utilisant Python et MySQL, accessible à l'adresse `http://localhost:8001`.
+- `mongodb` : Base de données MongoDB.
 
-3. Construisez les images Docker :
-   ```bash
-    docker-compose build
+## Basculer entre les backends
 
-4. Lancez les conteneurs Docker :
-    ```bash
-     docker-compose up
+Pour passer de Node.js avec MongoDB à Python avec MySQL, suivez les étapes suivantes :
 
-5. Accédez à l'application dans votre navigateur :
-    ```bash
-    http://localhost:3000
+1. Allez dans le fichier `src/components/Forms/Forms.js`.
+2. Commentez ou décommentez les sections appropriées pour utiliser l'API correspondante :
 
-## Tests
+    - Pour Node.js avec MongoDB :
 
-Les tests sont divisés en trois catégories : unitaires, d'intégration et end-to-end (e2e) avec Cypress.
+    ```javascript
+    // Envoi des données du formulaire au backend Node.js avec MongoDB
+    await axios.post('http://localhost:8000/api/users', formData);
+    ```
 
-### Tests Unitaires et d'Intégration
-Les tests unitaires et d'intégration sont exécutés à chaque étape de la pipeline GitHub. Ils assurent le bon fonctionnement des différentes parties de l'application, y compris les fonctionnalités de sauvegarde et de suppression des utilisateurs.
+    - Pour Python avec MySQL :
 
-### Tests End-to-End (e2e) avec Cypress
-Les tests end-to-end sont exécutés avec Cypress et utilisent les deux architectures Docker pour tester l'ensemble de l'application, de l'interface utilisateur aux interactions avec la base de données.
+    ```javascript
+    // Envoi des données du formulaire au backend Python avec MySQL
+    await axios.post('http://localhost:8001/users', formDataWithFormattedDate);
+    ```
 
-## Déploiement
-La pipeline GitHub est configurée pour déployer l'application après chaque validation des tests. Elle met en place l'environnement Docker nécessaire et lance les tests end-to-end avec Cypress pour assurer la qualité de l'application déployée.
+3. Dans le fichier `src/App.js`, modifiez les requêtes API pour correspondre au backend sélectionné :
 
-## Contribuer
-Les contributions à ce projet sont les bienvenues. Pour contribuer, veuillez ouvrir une demande d'extraction (pull request) et décrire les changements que vous proposez.
+    - Pour Node.js avec MongoDB :
 
-## Licence
-Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
+    ```javascript
+    // const response = await axios.get('http://localhost:8000/users');
+    // setUsers(response.data.utilisateurs || []);
+    ```
+
+    - Pour Python avec MySQL :
+
+    ```javascript
+    const response = await axios.get("http://localhost:8001/users");
+    setUsers(response.data.utilisateurs || []);
+    ```
+
+## Tests avec Cypress
+
+Les tests E2E avec Cypress peuvent être exécutés en mode headless à l'aide de Docker. Pour cela, assurez-vous que votre application est en cours d'exécution, puis lancez les tests avec la commande suivante :
+
+cd app npm run cypress

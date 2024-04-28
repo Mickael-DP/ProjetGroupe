@@ -47,3 +47,16 @@ jobs:
         run: |
           npm run jsdoc
           npm run build --if-present
+       # Set up and test Docker containers (Node.js and MongoDB)
+      - name: Docker compose up
+        run: |
+          docker-compose up -d
+          sleep 10
+          docker ps
+      - name: Cypress tests
+        run: |
+          cd ./app
+          npm run cypress-spec
+      - name: Docker compose down
+        run: |
+          docker-compose down

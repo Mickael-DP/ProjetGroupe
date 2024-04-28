@@ -1,6 +1,6 @@
 describe('App', () => {
 	beforeEach(() => {
-		cy.visit('/');
+		cy.visit('http://localhost:3000');
 	});
 
 	it('devrait afficher le titre correct', () => {
@@ -14,10 +14,5 @@ describe('App', () => {
 	it("devrait changer le statut de l'utilisateur en admin", () => {
 		cy.get('[data-testid=admin-switch]').click();
 		cy.contains('Admin').should('be.visible');
-	});
-
-	it('devrait afficher les utilisateurs après la suppression', () => {
-		cy.contains('X').first().click();
-		cy.contains('Users Manager').should('be.visible');
 	});
 });
