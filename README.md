@@ -1,21 +1,6 @@
-# Projet de Groupe CI/CD
+# Projet CI/CD avec Docker et Tests
 
-Ce projet est une application web de gestion des utilisateurs, développée dans le cadre d'un cours de Développement Web. L'application permet aux utilisateurs de s'inscrire, de se connecter, de gérer leur profil et d'accéder à des fonctionnalités avancées telles que la suppression de compte.
-
-## Table des matières
-
-1. [Introduction](#introduction)
-2. [Architecture du Projet](#architecture-du-projet)
-3. [Installation](#installation)
-4. [Utilisation](#utilisation)
-5. [Tests](#tests)
-6. [Déploiement](#deploiement)
-7. [Contribuer](#contribuer)
-8. [Licence](#licence)
-
-## Introduction
-
-Ce projet vise à fournir une solution complète pour la gestion des utilisateurs, en utilisant des technologies modernes telles que Node.js, Express, MongoDB, Python, Flask, MySQL et React.
+Ce projet est une application web de gestion des utilisateurs, développée dans le cadre d'un cours de Développement Web. L'objectif est de créer deux architectures Docker distinctes pour le backend, une avec MongoDB / Node.js / React et une avec MySQL / Python / React. L'application React possède un formulaire qui permet de sauvegarder les données dans la base de données et d'afficher la liste des utilisateurs. De plus, elle doit permettre de supprimer un utilisateur, soit à l'aide d'un compte admin, soit avec un mot de passe connu par le serveur.
 
 ## Architecture du Projet
 
@@ -30,46 +15,45 @@ Le projet est divisé en plusieurs parties :
 
 ### Prérequis
 
-- Node.js et npm installés sur votre machine.
-- Python et pip installés sur votre machine.
-- Docker Desktop installé sur votre machine (pour exécuter les conteneurs Docker).
+- Docker Desktop installé sur votre machine.
 
 ### Étapes d'installation
 
 1. Clonez ce dépôt sur votre machine :
-git clone <url-du-repo>
-2. Accédez au dossier du projet :
-cd ProjetGroupe
+   ```bash
+   git clone <url-du-repo>
 
-3. Installez les dépendances pour le frontend et le backend Node.js avec MongoDB :
-cd app
-npm install
-cd ../backend_nodejs_mongodb
-npm install
+2. Accédez au répertoire du projet :
+   ```bash
+   cd <nom-du-repo>
 
-4. Installez les dépendances pour le backend Python avec MySQL :
-cd ../backend_python_mysql
-pip install -r requirements.txt
+3. Construisez les images Docker :
+   ```bash
+    docker-compose build
 
-5. Lancez les conteneurs Docker pour MongoDB et MySQL :
-docker-compose up -d
+4. Lancez les conteneurs Docker :
+    ```bash
+     docker-compose up
 
-6. Créez la base de données MySQL et les tables nécessaires :
-python create_db.py
+5. Accédez à l'application dans votre navigateur :
+    ```bash
+    http://localhost:3000
 
+## Tests
 
-8. Lancez les serveurs frontend et backend :
-cd ../app
-npm start
-cd ../backend_nodejs_mongodb
-npm start
-cd ../backend_python_mysql
-python app.py
+Les tests sont divisés en trois catégories : unitaires, d'intégration et end-to-end (e2e) avec Cypress.
 
-9. Accédez à l'application dans votre navigateur à l'adresse http://localhost:3000.
+### Tests Unitaires et d'Intégration
+Les tests unitaires et d'intégration sont exécutés à chaque étape de la pipeline GitHub. Ils assurent le bon fonctionnement des différentes parties de l'application, y compris les fonctionnalités de sauvegarde et de suppression des utilisateurs.
 
-## Utilisation
+### Tests End-to-End (e2e) avec Cypress
+Les tests end-to-end sont exécutés avec Cypress et utilisent les deux architectures Docker pour tester l'ensemble de l'application, de l'interface utilisateur aux interactions avec la base de données.
 
-L'application permet aux utilisateurs de s'inscrire, de se connecter, de gérer leur profil et d'accéder à des fonctionnalités avancées telles que la suppression de compte.
+## Déploiement
+La pipeline GitHub est configurée pour déployer l'application après chaque validation des tests. Elle met en place l'environnement Docker nécessaire et lance les tests end-to-end avec Cypress pour assurer la qualité de l'application déployée.
 
+## Contribuer
+Les contributions à ce projet sont les bienvenues. Pour contribuer, veuillez ouvrir une demande d'extraction (pull request) et décrire les changements que vous proposez.
 
+## Licence
+Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
