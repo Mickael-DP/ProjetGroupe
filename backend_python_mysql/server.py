@@ -1,9 +1,7 @@
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import mysql.connector
 import os
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from datetime import datetime
-
 
 app = FastAPI()
 origins = ["*"]
@@ -27,31 +25,47 @@ conn = mysql.connector.connect(
 @app.post("/users")
 async def create_user(user_data: dict):
     cursor = conn.cursor()
-
-    # Convertir la date au format 'YYYY-MM-DD'
-    formatted_date = datetime.strptime(user_data['birthday'], '%d/%m/%Y').strftime('%Y-%m-%d')
-
-    # Mettre à jour la valeur de la clé 'birthday' dans user_data
-    user_data['birthday'] = formatted_date
-
-    # Insérer les données dans la base de données
-    sql_insert_query = """INSERT INTO utilisateur (firstname, lastname, email, birthday, city, address_code)
-    VALUES (%(firstName)s, %(lastName)s, %(email)s, %(birthday)s, %(city)s, %(addressCode)s)"""
-    cursor.execute(sql_insert_query, user_data)
-    conn.commit()
-    print("Record inserted successfully")
-
-    # Renvoyer les données insérées et un code 200 OK
+    try:
+        # Convertir la date au format 'YYYY-MM-DD' si la date est fournie
+        # if 'birthday' in user_data and user_data['birthday']:
+        #     user_data['birthday'] = datetime.strptime(user_data['birthday'], '%d/%m/%Y').strftime('%Y-%m-%d')
+        
+        sql_insert_query = """INSERT INTO utilisateur (firstname, lastname, email, birthday, city, address_code)
+        VALUES (%(firstName)s, %(lastName)s, %(email)s, %(birthday)s, %(city)s, %(addressCode)s)"""
+        cursor.execute(sql_insert_query, user_data)
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        raise HTTPException(status_code=400, detail=str(e))
+    finally:
+        cursor.close()
     return {'user': user_data}
 
 @app.get("/users")
 async def get_users():
+    cursor = conn.cursor(dictionary=True)
+    try:
+        sql_select_Query = "SELECT * FROM utilisateur"
+        cursor.execute(sql_select_Query)
+        records = cursor.fetchall()
+        print("Total number of rows in table: ", cursor.rowcount)
+        return {'utilisateurs': records}
+    finally:
+        cursor.close()
+
+@app.delete("/users/{user_id}")
+async def delete_user(user_id: int):
     cursor = conn.cursor()
-    sql_select_Query = "select * from utilisateur"
-    cursor.execute(sql_select_Query)
-    # get all records
-    records = cursor.fetchall()
-    print("Total number of rows in table: ", cursor.rowcount)
-    # renvoyer nos données et 200 code OK
-    return {'utilisateurs': records}
+    try:
+        sql_delete_query = "DELETE FROM utilisateur WHERE id = %s"
+        cursor.execute(sql_delete_query, (user_id,))
+        conn.commit()
+        if cursor.rowcount == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        return {"message": "User deleted successfully"}
+    except Exception as e:
+        conn.rollback()
+        raise HTTPException(status_code=400, detail=str(e))
+    finally:
+        cursor.close()
 
