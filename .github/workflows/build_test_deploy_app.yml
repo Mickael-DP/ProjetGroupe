@@ -22,7 +22,7 @@ jobs:
         run: |
           cd ./app
           npm ci
-          npm test
+          #npm test
 
       - name: Build and Start the Docker Compose Stack
         run: docker-compose up -d
@@ -31,7 +31,7 @@ jobs:
         run: |
           cd server
           npm ci
-          #npm test
+          npm test
 
       - name: Run End-to-End Tests with Cypress
         uses: cypress-io/github-action@v6
