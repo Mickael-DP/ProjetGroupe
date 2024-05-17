@@ -35,6 +35,8 @@ jobs:
 
       - name: Run End-to-End Tests with Cypress
         uses: cypress-io/github-action@v6
+        with:
+          working-directory: './app'
 
       - name: Stop the Docker Compose Stack
         run: docker-compose down
